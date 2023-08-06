@@ -1,0 +1,10 @@
+{
+  "hello": "t",
+  "time": "time_1",
+  "weather": "get_weather",
+  "bye": "say_goodbye",
+  "date": "date_1",
+  "today": "date_1",
+  "day": "date_1",
+  "play": "play"
+}

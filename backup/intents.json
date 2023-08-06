@@ -1,0 +1,22 @@
+[
+    {
+        "patterns": ["how are you", "how are you doing"],
+        "responses": ["I'm doing well, thank you!", "I'm good, how about you?"]
+    },
+    {
+        "patterns": ["tell me a joke", "joke"],
+        "responses": ["Why don't scientists trust atoms? Because they make up everything!"]
+    },
+    {
+        "patterns": ["what's your name", "who are you"],
+        "responses": ["I am Chatbot, your virtual assistant."]
+    },
+    {
+        "patterns": ["thank you", "thanks"],
+        "responses": ["You're welcome!", "No problem!"]
+    },
+    {
+        "patterns": ["bye", "goodbye"],
+        "responses": ["Goodbye! Have a great day!", "See you later!"]
+    }
+]
