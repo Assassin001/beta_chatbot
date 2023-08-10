@@ -85,6 +85,7 @@ def scroll_text(*args):
 
 
 root = tk.Tk()
+root.geometry('1357x351')
 menubar = Menu(root)
 
 
@@ -98,24 +99,25 @@ input_var = tk.StringVar()
 frame_screen1 = tk.Frame(m1, bg="lightgray" , )
 m1.add(frame_screen1)
 
-img = PhotoImage(file= "i.png")
+#img = PhotoImage(file= "i.png")
 #Button(root, image=img , compound=LEFT).pack(side = TOP)
-img_label = tk.Label(frame_screen1,image=img)
-img_label.pack(side=tk.TOP)
+#img_label = tk.Label(frame_screen1,image=img)
+#img_label.pack(side=tk.TOP)
+
+
+
+entry_up = tk.Label(frame_screen1, text="Send")
+entry_up.pack(fill="x")
 entry = tk.Entry(frame_screen1, bd=1, width=80)
 entry.pack(side=tk.LEFT)
 
 input_var.trace("w", send_message)
 
 b1 = tk.Button(frame_screen1, text="Send", width=18, command=send_message)
-b1.pack()
+b1.pack(side=tk.LEFT,fill="x")
 
 frame_screen2 = tk.Frame(m1, bg="lightblue")
 m1.add(frame_screen2)
-
-
-
-
 
 conversation_text = tk.Text(frame_screen2, wrap=tk.WORD, state=tk.DISABLED)
 conversation_text.pack(fill=tk.BOTH, expand=True)
@@ -129,8 +131,10 @@ conversation_text.config(xscrollcommand=scrollbar_x.set)
 
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Close", command=donothing)
+filemenu.add_command(label="Change Responsive", command=donothing)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
+
 menubar.add_cascade(label="File", menu=filemenu)
 
 
