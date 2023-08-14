@@ -4,16 +4,71 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGridLayout
 from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, QMenuBar, QWidget, QVBoxLayout, QLabel
 from respongiver import *
+from PyQt5.QtWidgets import QRadioButton,QPushButton
+import json
+import os
+
+data = {
+    "key1":"value1",
+    "key2":"value2",
+}
 
 class SettingsWindow(QWidget):
-
-
     def __init__(self):
         super().__init__()
-        layout = QVBoxLayout()
-        self.label = QLabel("Another Window")
-        layout.addWidget(self.label)
+        self.setWindowTitle('Change The ChatBot')
+        self.setGeometry(100, 100, 320, 210)
+
+        # create a grid layout
+        layout = QGridLayout()
         self.setLayout(layout)
+
+        text = QLabel("Change The Chatbot Module",self)
+
+        rb_Inbuild = QRadioButton('Inbuild', self)
+        rb_Inbuild.toggled.connect(self.update)
+
+        rb_ChatGPT = QRadioButton('ChatGPT(Openai)', self)
+        rb_ChatGPT.toggled.connect(self.update)
+
+        rb_Bard = QRadioButton('Bard', self)
+        rb_Bard.toggled.connect(self.update)
+
+        self.result_label = QLabel('', self)
+
+        apply_bt= QPushButton("Apply",self)
+        apply_bt.clicked.connect(self.hide1)
+
+        layout.addWidget(text)
+        layout.addWidget(rb_Inbuild)
+        layout.addWidget(rb_ChatGPT)
+        layout.addWidget(rb_Bard)
+        layout.addWidget(self.result_label)
+
+        self.show()
+
+    def hide1(self):
+        self.hide()
+
+
+    def update(self):
+            # get the radio button the send the signal
+        rb = self.sender()
+
+            # check if the radio button is checked
+        if rb.isChecked():
+            self.result_label.setText(f'You selected {rb.text()}')
+            print((rb.text()))
+        data = {
+            "model":rb.text(),
+        }
+        with open("setting.json", "w") as json_file:
+            json.dump(data,json_file)
+
+        self.show()
+
+
+
 
 class ChatbotWindow(QMainWindow):
     def __init__(self):
@@ -80,10 +135,29 @@ class ChatbotWindow(QMainWindow):
         self.chat_history.append(bot_response)
         self.user_input.clear()
 
+        u_chat = {
+            "Q": user_message,
+            "A": bot_response,
+        }
+
+        if os.path.exists("config.json"):
+            with open("config.json", "a") as json_file:
+                json.dump(u_chat, json_file, indent=4)
+        else:
+            with open("config.json", "w") as json_file:
+                json.dump(u_chat, json_file, indent=4)
+
     def open_setting_window(self):
         if not self.settings_window:
             self.settings_window = SettingsWindow()
             self.settings_window.show()
+
+    #Didnt Worked After One Time Press
+
+    with open("setting.json", "r") as setting_file:
+        data = json.load(setting_file)
+
+    setting = data["model"]
 
 
 if __name__ == "__main__":
