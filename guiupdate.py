@@ -4,7 +4,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGridLayout
 from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, QMenuBar, QWidget, QVBoxLayout, QLabel
 from respongiver import *
-<<<<<<< HEAD
 from PyQt5.QtWidgets import QRadioButton,QPushButton
 import json
 import os
@@ -71,19 +70,6 @@ class SettingsWindow(QWidget):
 
 
 
-=======
-
-class SettingsWindow(QWidget):
-
-
-    def __init__(self):
-        super().__init__()
-        layout = QVBoxLayout()
-        self.label = QLabel("Another Window")
-        layout.addWidget(self.label)
-        self.setLayout(layout)
-
->>>>>>> 4b009b9 (bot)
 class ChatbotWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -149,7 +135,6 @@ class ChatbotWindow(QMainWindow):
         self.chat_history.append(bot_response)
         self.user_input.clear()
 
-<<<<<<< HEAD
         u_chat = {
             "Q": user_message,
             "A": bot_response,
@@ -162,14 +147,11 @@ class ChatbotWindow(QMainWindow):
             with open("config.json", "w") as json_file:
                 json.dump(u_chat, json_file, indent=4)
 
-=======
->>>>>>> 4b009b9 (bot)
     def open_setting_window(self):
         if not self.settings_window:
             self.settings_window = SettingsWindow()
             self.settings_window.show()
 
-<<<<<<< HEAD
     #Didnt Worked After One Time Press
 
     with open("setting.json", "r") as setting_file:
@@ -177,8 +159,6 @@ class ChatbotWindow(QMainWindow):
 
     setting = data["model"]
 
-=======
->>>>>>> 4b009b9 (bot)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

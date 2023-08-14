@@ -31,6 +31,7 @@ def process(user_input):
         return response
 
     def fallback_response(user_message):
+
         with open('intents.json') as file:
             intents = json.load(file)
 
