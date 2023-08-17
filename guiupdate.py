@@ -1,12 +1,13 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTextEdit, QPushButton, QVBoxLayout, QWidget ,QHBoxLayout
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QGridLayout
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, QMenuBar, QWidget, QVBoxLayout, QLabel
-from respongiver import *
-from PyQt5.QtWidgets import QRadioButton,QPushButton
 import json
 import os
+import sys
+
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, QWidget, QLabel
+from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QRadioButton, QPushButton
+from PyQt5.QtWidgets import QTextEdit
+
+from respongiver import *
 
 data = {
     "key1":"value1",
@@ -66,8 +67,6 @@ class SettingsWindow(QWidget):
             json.dump(data,json_file)
 
         self.show()
-
-
 
 
 class ChatbotWindow(QMainWindow):
