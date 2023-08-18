@@ -1,25 +1,14 @@
-import json
 import os
 import sys
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTextEdit, QWidget, QHBoxLayout, QGridLayout, QAction, \
-    QLabel, QRadioButton, QPushButton
-from PyQt5.QtWidgets import QLineEdit, QVBoxLayout, \
-    QSpacerItem, QSizePolicy, QStackedWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, \
+    QSpacerItem, QSizePolicy, QStackedWidget, QTextEdit, QMenuBar, QAction
 
 from respongiver import *
 
-data = {
-    "key1": "value1",
-    "key2": "value2",
-}
 
-
-# self.show()
-
-
-class ChatbotApp(QMainWindow):
+class LoginApp(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Login Page")
@@ -35,24 +24,17 @@ class ChatbotApp(QMainWindow):
     def init_ui(self):
         self.stacked_widget = QStackedWidget(self)
 
-        menubar = self.menuBar()
-        file_menu = menubar.addMenu("File")
-
         login_page = QWidget()
         welcome_page = QWidget()
         signup_page = QWidget()
-        Chatbot_page = QWidget()
 
-        self.stacked_widget.setCurrentIndex(0)
         self.stacked_widget.addWidget(login_page)
         self.stacked_widget.addWidget(welcome_page)
         self.stacked_widget.addWidget(signup_page)
-        self.stacked_widget.addWidget(Chatbot_page)
 
         self.init_login_page(login_page)
         self.init_welcome_page(welcome_page)
         self.init_signup_page(signup_page)
-        self.init_Chatbot_page(Chatbot_page)
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.stacked_widget)
@@ -157,117 +139,44 @@ class ChatbotApp(QMainWindow):
     def init_welcome_page(self, page):
         layout = QVBoxLayout()
 
-        welcome_label = QLabel("Welcome to the Application!")
-        layout.addWidget(welcome_label)
+        Layout1 = QHBoxLayout()
+        self.Message_Area = QTextEdit(self)
+        self.Message_Area.setReadOnly(True)
+        Layout1.addWidget(self.Message_Area)
 
-        logout_button = QPushButton("Logout")
-        logout_button.clicked.connect(self.show_login_page)
-        layout.addWidget(logout_button)
-
-        page.setLayout(layout)
-
-    def on_guest_button_clicked(self):
-        print("Guest button clicked")
-
-    class SettingsWindow(QWidget):
-        def __init__(self):
-            super().__init__()
-            self.setWindowTitle('Change The ChatBot')
-            self.setGeometry(100, 100, 320, 210)
-
-            self.settings_window = None
-
-            # create a grid layout
-            layout = QGridLayout()
-            self.setLayout(layout)
-
-            text = QLabel("Change The Chatbot Module", self)
-
-            rb_Inbuild = QRadioButton('Inbuild', self)
-            rb_Inbuild.toggled.connect(self.update)
-
-            rb_ChatGPT = QRadioButton('ChatGPT(Openai)', self)
-            rb_ChatGPT.toggled.connect(self.update)
-
-            rb_Bard = QRadioButton('Bard', self)
-            rb_Bard.toggled.connect(self.update)
-
-            self.result_label = QLabel('', self)
-
-            apply_bt = QPushButton("Apply", self)
-            apply_bt.clicked.connect(self.hide1)
-
-            layout.addWidget(text)
-            layout.addWidget(rb_Inbuild)
-            layout.addWidget(rb_ChatGPT)
-            layout.addWidget(rb_Bard)
-            layout.addWidget(self.result_label)
-
-            # self.show()
-
-        def hide1(self):
-            self.hide()
-
-        def update(self):
-            # get the radio button the send the signal
-            rb = self.sender()
-
-            # check if the radio button is checked
-            if rb.isChecked():
-                self.result_label.setText(f'You selected {rb.text()}')
-                print((rb.text()))
-            data = {
-                "model": rb.text(),
-            }
-            with open("setting.json", "w") as json_file:
-                json.dump(data, json_file)
-
-    def init_Chatbot_page(self, page):
-
-        self.setWindowTitle("Chatbot Interface")
-
-        menubar = self.menuBar()
-        file_menu = menubar.addMenu("File")
-
-        exit_action = QAction("Exit", self)
-        exit_action.triggered.connect(self.close)
-
-        file_menu.addAction(exit_action)
-        setting_menu = menubar.addMenu("Configuration")
-
-        setting_action = QAction("Setting", self)
-        setting_action.triggered.connect(self.open_setting_window)
-        setting_menu.addAction(setting_action)
-
-        layout = QVBoxLayout()
-        # Create a text area for the chat history
-        self.chat_history = QTextEdit(self)
-        self.chat_history.setReadOnly(True)
-        layout.addWidget(self.chat_history)
-
-        layout1 = QHBoxLayout()
-
-        self.user_input = QTextEdit(self)
-        self.send_button = QPushButton("Send", self)
+        Layout2 = QHBoxLayout()
+        self.user_message = QTextEdit(self)
+        self.send_button = QPushButton("Send")
         self.send_button.clicked.connect(self.handle_send_button)
-        layout1.addWidget(self.user_input)
-        layout1.addWidget(self.send_button)
+        Layout2.addWidget(self.user_message)
+        Layout2.addWidget(self.send_button)
 
-        layout.addLayout(layout1)
+        setting_menubar = QMenuBar(self)
+        setting_menu = setting_menubar.addMenu("Setting")
+        about_menu = setting_menubar.addMenu("About")
+
+        change_setting_action = QAction("Change Setting", self)
+        change_setting_action.triggered.connect(self.open_setting_window)
+        setting_menu.addAction(change_setting_action)
+
+        about_action = QAction("About Chatbot", self)
+        about_menu.addAction(about_action)
+
+        layout.addWidget(setting_menubar)
+        layout.addLayout(Layout1)
+        layout.addLayout(Layout2)
         page.setLayout(layout)
-
-
 
     def handle_send_button(self):
-        user_message = self.user_input.toPlainText().strip()
+        user_message = self.user_message.toPlainText().strip()
         user_input = user_message
         print(user_input)
 
         res1 = process(user_message)
         res1 = str(res1)
 
-        user_message_formatted = "You: " + user_message
-        self.chat_history.append(user_message_formatted)
+        user_message_formatted = "You: " + str(user_message)
+        self.Message_Area.append(user_message_formatted)
 
         if res1 is not None:
             bot_response = "Bot: " + res1
@@ -275,8 +184,8 @@ class ChatbotApp(QMainWindow):
             bot_response = "Bot: Sorry, I didn't get it."
         bot_response = "Bot: " + res1
 
-        self.chat_history.append(bot_response)
-        self.user_input.clear()
+        self.Message_Area.append(bot_response)
+        self.user_message.clear()
 
         u_chat = {
             "Q": user_message,
@@ -290,17 +199,23 @@ class ChatbotApp(QMainWindow):
             with open("config.json", "w") as json_file:
                 json.dump(u_chat, json_file, indent=4)
 
+    def check(self):
+        n1 = self.C1_password_input.text()
+        n2 = self.C2_password_input.text()
+
+        if n1 == n2:
+            self.show_welcome_page()
+        else:
+            print("Create Account failed.Password didnt match")
+
     def open_setting_window(self):
-        if not self.settings_window:
-            self.settings_window = self.SettingsWindow()  # Create an instance of SettingsWindow
-        self.settings_window.show()
+        print("Openning Setting")
 
-    # Didnt Worked After One Time Press
+    def show_signup_page(self):
+        self.stacked_widget.setCurrentIndex(2)
 
-    with open("setting.json", "r") as setting_file:
-        data = json.load(setting_file)
-
-    setting = data["model"]
+    def show_welcome_page(self):
+        self.stacked_widget.setCurrentIndex(1)
 
     def show_login_page(self):
         self.stacked_widget.setCurrentIndex(0)
@@ -313,32 +228,15 @@ class ChatbotApp(QMainWindow):
 
         if username in self.default_credentials and self.default_credentials[username] == password:
             self.show_welcome_page()
-            self.stacked_widget.setCurrentIndex(3)
-
         else:
             print("Login failed. Incorrect username or password.")
 
-    def show_welcome_page(self):
-        self.stacked_widget.setCurrentIndex(1)
-
-    def show_signup_page(self):
-        self.stacked_widget.setCurrentIndex(2)
-
-    def check(self):
-        n1 = self.C1_password_input.text()
-        n2 = self.C2_password_input.text()
-
-        if n1 == n2:
-            self.ChatbotShowUp()
-        else:
-            print("Create Account failed.Password didnt match")
-
-    def ChatbotShowUp(self):
-        self.stacked_widget.setCurrentIndex(3)
+    def on_guest_button_clicked(self):
+        print("Guest button clicked")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = ChatbotApp()
+    window = LoginApp()
     window.show()
     sys.exit(app.exec_())
