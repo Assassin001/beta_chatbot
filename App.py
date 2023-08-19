@@ -1,3 +1,4 @@
+import json
 import os
 import sys
 
@@ -144,6 +145,8 @@ class LoginApp(QWidget):
         self.Message_Area.setReadOnly(True)
         Layout1.addWidget(self.Message_Area)
 
+
+
         Layout2 = QHBoxLayout()
         self.user_message = QTextEdit(self)
         self.send_button = QPushButton("Send")
@@ -154,6 +157,7 @@ class LoginApp(QWidget):
         setting_menubar = QMenuBar(self)
         setting_menu = setting_menubar.addMenu("Setting")
         about_menu = setting_menubar.addMenu("About")
+        back_menu = setting_menubar.addMenu("Back")
 
         change_setting_action = QAction("Change Setting", self)
         change_setting_action.triggered.connect(self.open_setting_window)
@@ -161,6 +165,10 @@ class LoginApp(QWidget):
 
         about_action = QAction("About Chatbot", self)
         about_menu.addAction(about_action)
+
+        change_back_action = QAction("Go Back" , self)
+        change_back_action.triggered.connect(self.show_login_page)
+        back_menu.addAction(change_back_action)
 
         layout.addWidget(setting_menubar)
         layout.addLayout(Layout1)
